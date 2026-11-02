@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#101827">
+<title>YükKurtarırMı? | Nakliye Kâr Hesaplama</title>
+<style>
+:root{color-scheme:dark;--bg:#0b1220;--panel:#131e2e;--panel2:#0e1725;--line:#26364b;--muted:#9aabc0;--text:#f4f7fb;--gold:#f5b82e;--green:#20c987;--red:#ff647c;--blue:#66aaff}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#0b1220,#101b2b);color:var(--text);font:15px system-ui,-apple-system,Segoe UI,Roboto,sans-serif;padding:0 0 86px}
+.app{max-width:760px;margin:auto;padding:18px 15px 24px}.top{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);padding:5px 0 15px;margin-bottom:16px}.brand{display:flex;gap:11px;align-items:center}.logo{font-size:32px}.brand h1{font-size:20px;margin:0;color:var(--gold);letter-spacing:-.5px}.brand p{font-size:11px;color:var(--muted);margin:3px 0 0}.tag{font-size:11px;color:#101827;background:var(--gold);font-weight:900;padding:7px 10px;border-radius:10px}
+.tabs{display:flex;gap:8px;margin:0 0 15px}.tab{flex:1;border:1px solid var(--line);background:var(--panel);color:var(--muted);padding:11px 8px;border-radius:12px;font-weight:800}.tab.active{background:var(--gold);color:#15191f;border-color:var(--gold)}
+.card{background:rgba(19,30,46,.96);border:1px solid var(--line);border-radius:17px;padding:16px;margin:12px 0}.card h2{font-size:15px;margin:0 0 13px;color:var(--gold)}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.field{min-width:0}.field.full{grid-column:1/-1}label{display:block;color:#bdc9d8;font-size:12px;font-weight:700;margin:0 0 6px}input,select{width:100%;border:1px solid #304158;background:var(--panel2);color:var(--text);border-radius:10px;padding:12px;font:inherit;min-width:0}input:focus,select:focus{outline:2px solid #f5b82e66;border-color:var(--gold)}.hint{font-size:11px;color:var(--muted);margin-top:5px;line-height:1.4}.modes{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.mode{border:1px solid var(--line);border-radius:12px;padding:11px 8px;background:var(--panel2);color:var(--muted);font-size:12px;font-weight:800;line-height:1.35}.mode.active{border-color:var(--gold);background:#453516;color:#ffe1a0}.result{border-radius:18px;padding:17px;border:1px solid #2b805f;background:linear-gradient(145deg,#103a30,#10271f);text-align:center}.result.warn{background:linear-gradient(145deg,#493716,#292013);border-color:#9b7022}.result.loss{background:linear-gradient(145deg,#481c2a,#27151d);border-color:#9b354c}.eyebrow{font-size:11px;letter-spacing:1px;font-weight:900;color:#c4d3df}.profit{font-size:clamp(30px,8vw,42px);font-weight:950;letter-spacing:-1px;margin:5px 0}.message{font-size:13px;font-weight:800}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;border-top:1px solid #ffffff20;margin-top:14px;padding-top:12px}.stat span{display:block;color:#b6c5d4;font-size:11px}.stat strong{font-size:14px;display:block;margin-top:4px}.breakdown{display:grid;grid-template-columns:1fr auto;gap:9px;font-size:13px}.breakdown div:nth-child(odd){color:#b7c5d6}.breakdown div:nth-child(even){font-weight:800;text-align:right}.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}.btn{border:0;border-radius:11px;padding:12px 14px;font-weight:900;background:var(--gold);
+color:#15191f;flex:1;min-width:130px}.btn.secondary{background:#24344a;color:#eaf1f8;border:1px solid #354a64}.btn.green{background:#087e58;color:white}.btn.danger{background:#542333;color:#ffd8df}.muted{color:var(--muted);font-size:12px}.trip{padding:12px;border:1px solid var(--line);border-radius:12px;margin:9px 0;background:var(--panel2);display:flex;justify-content:space-between;gap:10px}.trip strong{display:block}.trip small{color:var(--muted)}.trip .amount{font-weight:900;white-space:nowrap}.empty{text-align:center;padding:28px 12px;color:var(--muted);border:1px dashed #34465c;border-radius:12px}.hidden{display:none!important}.footer{text-align:center;color:#75869b;font-size:10px;padding:18px 0}.note{background:#192a40;border-left:3px solid var(--blue);padding:10px 12px;border-radius:8px;color:#c6d7e9;font-size:12px;line-height:1.5}
+@media(max-width:440px){.grid{gap:10px}.card{padding:13px}.modes{gap:5px}.mode{font-size:11px;padding:10px 5px}.stats{gap:4px}.stat strong{font-size:12px}}
+@media print{body{background:white;color:#111;padding:0}.app{max-width:none}.top,.tabs,.actions,.no-print{display:none!important}.card,.result{background:white!important;color:#111!important;border:1px solid #aaa!important;break-inside:avoid}.card h2,.eyebrow,.stat span,.breakdown div:nth-child(odd),.hint{color:#333!important}.profit,.stat strong,.breakdown div:nth-child(even){color:#111!important}.result{margin-top:15px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="top">
+ <div class="brand"><div class="logo">🚛</div><div><h1>YükKurtarırMı?</h1><p>Nakliye kâr ve sefer maliyeti asistanı</p></div></div>
+ <div class="tag">SEFER HESABI</div>
+</header>
+<nav class="tabs no-print">
+ <button class="tab active" data-tab="calc">🧮 Hesapla</button>
+ <button class="tab" data-tab="book">📒 Sefer Defteri</button>
+</nav>
+
+<section id="calc">
+ <div class="result" id="result">
+  <div class="eyebrow" id="status">SEFER SONUCU</div>
+  <div class="profit" id="profit">₺0</div>
+  <div class="message" id="message">Bilgileri girerek seferinizi hesaplayın.</div>
+  <div class="stats">
+   <div class="stat"><span>Toplam gider</span><strong id="totalExpense">₺0</strong></div>
+   <div class="stat"><span>Kâr marjı</span><strong id="margin">%0</strong></div>
+   <div class="stat"><span>Toplam mesafe</span><strong id="distance">0 km</strong></div>
+  </div>
+ </div>
+
+ <div class="card">
+  <h2>💰 1. Navlun ve dönüş şekli</h2>
+  <div class="grid">
+   <div class="field"><label for="outRevenue">Gidiş navlunu (₺)</label><input id="outRevenue" type="number" min="0" step="1" value="34000"></div>
+   <div class="field"><label for="returnRevenue">Dönüş navlunu (₺)</label><input id="returnRevenue" type="number" min="0" step="1" value="0"></div>
+   <div class="field full"><label>Dönüş planı</label>
+    <div class="modes">
+     <button class="mode active" data-mode="one">➡️<br>Tek yön</button>
+     <button class="mode" data-mode="empty">🔄<br>Dönüş boş</button>
+     <button class="mode" data-mode="loaded">🚚<br>Dönüş yüklü</button>
+    </div>
+    <div class="hint" id="modeHint">Yalnızca gidiş mesafesi ve gidiş navlunu hesaba katılır.</div>
+   </div>
+  </div>
+ </div>
+
+ <div class="card">
+  <h2>📍 2. Mesafe ve araç</h2>
+  <div class="grid">
+   <div class="field"><label for="vehicle">Araç türü</label><select id="vehicle">
+    <option value="33">Tır / çekici — 33 L/100 km</option><option value="26">Kırkayak / 10 teker — 26 L/100 km</option><option value="16">Kamyonet — 16 L/100 km</option><option value="10">Panelvan — 10 L/100 km</option><option value="custom">Diğer / özel tüketim</option>
+   </select></div>
+   <div class="field"><label for="consumption">Tüketim (L/100 km)</label><input id="consumption" type="number" min="0" step=".1" value="33"></div>
+   <div class="field"><label for="outKm">Gidiş mesafesi (km)</label><input id="outKm" type="number" min="0" step="1" value="420"></div>
+   <div class="field"><label for="returnKm">Dönüş mesafesi (km)</label><input id="returnKm" type="number" min="0" step="1" value="420"></div>
+  </div>
+  <div class="hint">Mesafeleri gerçek güzergâha göre girin. Dönüş boş/yüklü seçildiğinde dönüş mesafesi hesaba katılır.</div>
+ </div>
+
+ <div class="card">
+  <h2>⛽ 3. Yakıt ve yol ücretleri</h2>
+  <div class="grid">
+   <div class="field"><label for="fuelPrice">Mazot litre fiyatı (₺)</label><input id="fuelPrice" type="number" min="0" step=".01" value="44.50"></div>
+   <div class="field"><label for="outToll">Gidiş otoyol/köprü (₺)</label><input id="outToll" type="number" min="0" step=".01" value="450"></div>
+   <div class="field"><label for="returnToll">Dönüş otoyol/köprü (₺)</label><input id="returnToll" type="number" min="0" step=".01" value="450"></div>
+  </div>
+  <div class="hint">Otoyol ve köprü ücretleri otomatik alınmaz; kullandığınız güzergâhın güncel tutarını girin.</div>
+ </div>
+
+ <div class="card">
+  <h2>🛠️ 4. Diğer sefer giderleri</h2>
+  <div class="grid">
+   <div class="field"><label for="wear">Bakım/lastik/yağ (₺/km)</label><input id="wear" type="number" min="0" step=".01" value="2.20"></div>
+   <div class="field"><label for="depreciation">Amortisman (₺/km)</label><input id="depreciation" type="number" min="0" step=".01" value="0"></div>
+   <div class="field"><label for="driver">Şoför/harcırah (₺)</label><input id="driver" type="number" min="0" step="1" value="750"></div>
+   <div class="field"><label for="loading">Yükleme/boşaltma (₺)</label><input id="loading" type="number" min="0" step="1" value="0"></div>
+   <div class="field full"><label for="other">Diğer giderler (₺)</label><input id="other" type="number" min="0" step="1" value="0"></div>
+  </div>
+  <div class="hint">Bakım ve amortisman değerleri işletmenizin gerçek maliyetlerine göre ayarlanmalıdır. Varsayılanlar kesin maliyet değildir.</div>
+ </div>
+
+ <div class="card">
+  <h2>📊 5. Hesaplanan gider dökümü</h2>
+  <div class="breakdown">
+   <div>Toplam gelir</div><div id="revenueBreak">₺0</div>
+   <div>Toplam mesafe</div><div id="kmBreak">0 km</div>
+   <div>Yakıt miktarı</div><div id="litersBreak">0 L</div>
+   <div>Yakıt gideri</div><div id="fuelBreak">₺0</div>
+   <div>Otoyol/köprü</div><div id="tollBreak">₺0</div>
+   <div>Bakım/lastik/yağ</div><div id="wearBreak">₺0</div>
+   <div>Amortisman</div><div id="deprBreak">₺0</div>
+   <div>Şoför/harcırah</div><div id="driverBreak">₺0</div>
+   <div>Yükleme ve diğer</div><div id="otherBreak">₺0</div>
+  </div>
+  <div class="actions no-print">
+   <button class="btn" id="saveBtn">💾 Seferi kaydet</button>
+   <button class="btn green" id="waBtn">WhatsApp paylaş</button>
+   <button class="btn secondary" id="pdfBtn">PDF / Yazdır</button>
+  </div>
+ </div>
+ <div class="card no-print" id="adToolsCard">
+  <h2>🎬 Uygulamayı destekle</h2>
+  <p class="muted">İstersen ödüllü videoyu izleyerek uygulamanın gelişimini destekleyebilirsin.</p>
+  <div class="actions">
+   <button class="btn secondary" id="rewardAdBtn">🎁 Ödüllü videoyu izle</button>
+   <button class="btn secondary" id="interstitialAdBtn">Reklamı göster</button>
+  </div>
+  <p class="hint" id="adStatus">Reklam servisi hazırlanıyor…</p>
+ </div>
+ <div class="note">Bu araç tahmini işletme maliyeti hesabıdır. Vergi, KDV, finansman/faiz, komisyon, bekleme, kantar, şehir içi dağıtım ve beklenmeyen masrafları ayrıca girmeniz gerekebilir. Son karar öncesi gerçek değerleri kontrol edin.</div>
+</section>
+
+<section id="book" class="hidden">
+ <div class="card">
+  <h2>📒 Kayıtlı seferlerim</h2>
+  <p class="muted">Kayıtlar bu cihazın tarayıcısında saklanır. Uygulama verisi silinirse kayıtlar da silinebilir.</p>
+  <div id="trips"></div>
+  <div class="actions no-print"><button class="btn secondary" id="csvBtn">Excel için CSV indir</button><button class="btn danger" id="clearBtn">Defteri temizle</button></div>
+ </div>
+</section>
+<div class="footer">YükKurtarırMı? • Tahmini hesaplama aracıdır</div>
+</div>
+<script type="module" src="/admob.js"></script>
+<script>
+(()=>{
+ const $=id=>document.getElementById(id);
+ const fields=['outRevenue','returnRevenue','consumption','outKm','returnKm','fuelPrice','outToll','returnToll','wear','depreciation','driver','loading','other'];
+ let mode='one', trips=[];
+ try{trips=JSON.parse(localStorage.getItem('yuk_kurtarir_trips_v2')||'[]');if(!Array.isArray(trips))trips=[]}catch(e){trips=[]}
+ const num=id=>{const n=Number($(id).value);return Number.isFinite(n)&&n>0?n:0};
+ const money=n=>'₺'+Math.round(n).toLocaleString('tr-TR');
+ const fmt=n=>Number(n).toLocaleString('tr-TR',{maximumFractionDigits:1});
+ const setText=(id,v)=>$(id).textContent=v;
+ function calc(){
+  const outKm=num('outKm'), retKm=mode==='one'?0:num('returnKm');
+  const totalKm=outKm+retKm;
+  const revenue=num('outRevenue')+(mode==='loaded'?num('returnRevenue'):0);
+  const liters=totalKm*num('consumption')/100, fuel=liters*num('fuelPrice');
+  const toll=num('outToll')+(mode==='one'?0:num('returnToll'));
+  const wear=totalKm*num('wear'),depr=totalKm*num('depreciation');
+  const driver=num('driver'),loading=num('loading'),other=num('other');
+  const expense=fuel+toll+wear+depr+driver+loading+other;
+  const net=revenue-expense,margin=revenue>0?net/revenue*100:0;
+  return {mode,outKm,retKm,totalKm,revenue,liters,fuel,toll,wear,depr,driver,loading,other,expense,net,margin};
+ }
+ function render(){
+  const c=calc(),r=$('result');r.className='result'+(c.net<0?' loss':c.margin<18?' warn':'');
+  setText('status',c.net<0?'ZARAR RİSKİ':c.margin<18?'DÜŞÜK KÂR MARJI':'SEFER SONUCU');
+  setText('profit',(c.net>0?'+':'')+money(c.net));
+  setText('message',c.net<0?'Bu navlun girilen giderleri karşılamıyor.':c.margin<18?'Kâr marjı düşük; masrafları ve teklifi yeniden kontrol edin.':'Girilen değerlere göre sefer kârlı görünüyor.');
+  setText('totalExpense',money(c.expense));setText('margin','%'+fmt(c.margin));setText('distance',fmt(c.totalKm)+' km');
+  setText('revenueBreak',money(c.revenue));setText('kmBreak',fmt(c.totalKm)+' km');setText('litersBreak',fmt(c.liters)+' L');setText('fuelBreak',money(c.fuel));setText('tollBreak',money(c.toll));setText('wearBreak',money(c.wear));setText('deprBreak',money(c.depr));setText('driverBreak',money(c.driver));setText('otherBreak',money(c.loading+c.other));
+  $('returnRevenue').disabled=mode!=='loaded';$('returnKm').disabled=mode==='one';$('returnToll').disabled=mode==='one';
+  $('returnRevenue').style.opacity=mode==='loaded'?'1':'.45';
+  $('returnKm').style.opacity=mode==='one'?'.45':'1';$('returnToll').style.opacity=mode==='one'?'.45':'1';
+  setText('modeHint',mode==='one'?'Yalnızca gidiş mesafesi ve gidiş navlunu hesaba katılır.':mode==='empty'?'Dönüş mesafesi ve dönüş yol ücretleri eklenir; dönüş geliri sıfır kabul edilir.':'Dönüş mesafesi ve dönüş yol ücretleri eklenir; dönüş navlunu da gelire dahil edilir.');
+ }
+ function persist(){try{localStorage.setItem('yuk_kurtarir_trips_v2',JSON.stringify(trips))}catch(e){alert('Kayıt yapılamadı. Cihaz depolama alanını kontrol edin.')}}
+ function renderTrips(){
+  const box=$('trips');box.innerHTML='';
+  if(!trips.length){box.innerHTML='<div class="empty">Henüz kayıtlı sefer yok.<br>Hesaplama ekranından sefer kaydedebilirsiniz.</div>';return}
+  trips.forEach(t=>{
+   const el=document.createElement('div');el.className='trip';
+   const left=document.createElement('div'),right=document.createElement('div');
+   const strong=document.createElement('strong');strong.textContent=t.route;
+   const small=document.createElement('small');small.textContent=t.date+' • '+t.modeLabel+' • '+t.km+' km';
+   left.append(strong,small);right.className='amount';right.textContent=money(t.net);right.style.color=t.net>=0?'#20c987':'#ff647c';
+   el.append(left,right);box.append(el);
+  });
+ }
+ fields.forEach(id=>$(id).addEventListener('input',render));
+ $('vehicle').addEventListener('change',()=>{if($('vehicle').value!=='custom')$('consumption').value=$('vehicle').value;render()});
+ document.querySelectorAll('[data-mode]').forEach(b=>b.addEventListener('click',()=>{mode=b.dataset.mode;document.querySelectorAll('[data-mode]').forEach(x=>x.classList.toggle('active',x===b));render()}));
+ document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('[data-tab]').forEach(x=>x.classList.toggle('active',x===b));$('calc').classList.toggle('hidden',b.dataset.tab!=='calc');$('book').classList.toggle('hidden',b.dataset.tab!=='book');if(b.dataset.tab==='book')renderTrips()}));
+ $('saveBtn').addEventListener('click',()=>{
+  const c=calc();if(c.totalKm<=0||c.revenue<=0){alert('Seferi kaydetmek için mesafe ve gidiş navlunu girin.');return}
+  const modeLabel=mode==='one'?'Tek yön':mode==='empty'?'Dönüş boş':'Dönüş yüklü';
+  trips.unshift({date:new Date().toLocaleDateString('tr-TR'),route:'Özel sefer',modeLabel,km:c.totalKm,net:Math.round(c.net),revenue:Math.round(c.revenue),expense:Math.round(c.expense)});
+  persist();alert('Sefer deftere kaydedildi.');renderTrips();window.dispatchEvent(new Event('yuk-sefer-saved'));
+ });
+ $('waBtn').addEventListener('click',()=>{
+  const c=calc(),label=mode==='one'?'Tek yön':mode==='empty'?'Dönüş boş':'Dönüş yüklü';
+  const msg=`YükKurtarırMı? Sefer Özeti\nDönüş: ${label}\nToplam mesafe: ${fmt(c.totalKm)} km\nToplam gelir: ${money(c.revenue)}\nToplam gider: ${money(c.expense)}\nTahmini net sonuç: ${money(c.net)}\nKâr marjı: %${fmt(c.margin)}\nNot: Bu bir tahmini maliyet hesabıdır.`;
+  window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank','noopener');
+ });
+ $('pdfBtn').addEventListener('click',()=>window.print());
+ $('clearBtn').addEventListener('click',()=>{if(confirm('Tüm kayıtlı seferleri silmek istiyor musunuz?')){trips=[];persist();renderTrips()}});
+ $('csvBtn').addEventListener('click',()=>{
+  if(!trips.length){alert('İndirilecek sefer kaydı yok.');return}
+  const rows=[['Tarih','Rota','Dönüş türü','Toplam km','Gelir TL','Gider TL','Net TL'],...trips.map(t=>[t.date,t.route,t.modeLabel,t.km,t.revenue,t.expense,t.net])];
+  const csv='\uFEFF'+rows.map(row=>row.map(v=>'"'+String(v??'').replaceAll('"','""')+'"').join(';')).join('\r\n');
+  const url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download='yuk-kurtarir-mi-seferler.csv';a.click();URL.revokeObjectURL(url);
+ });
+ render();renderTrips();
+})();
+</script>
+</body>
+</html>
