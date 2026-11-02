@@ -1,0 +1,23 @@
+{
+  "name": "yuk-kurtarir-mi",
+  "version": "1.0.0",
+  "private": true,
+  "description": "YükKurtarırMı Android uygulama proje kaynağı",
+  "scripts": {
+    "build": "vite build",
+    "cap:sync": "npx cap sync android",
+    "cap:open": "npx cap open android",
+    "android:add": "npx cap add android",
+    "configure:android": "node scripts/configure-android.js"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.5.0",
+    "@capacitor/core": "^8.5.0",
+    "@capacitor-community/admob": "8.2.1",
+    "@revenuecat/purchases-capacitor": "latest"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^8.5.0",
+    "vite": "^6.4.1"
+  }
+}
