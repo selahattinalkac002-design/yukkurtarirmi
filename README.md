@@ -1,0 +1,2 @@
+# yukkurtarirmi
+Yük hesaplma
